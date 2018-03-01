@@ -5,7 +5,6 @@ import (
 //	"encoding/json"
 	"log"
 	"net/http"
-	"fmt"
 
 	//webpush "github.com/sherclockholmes/webpush-go"
 	"github.com/gorilla/mux"
@@ -21,7 +20,8 @@ func main() {
 	
 	router := mux.NewRouter().StrictSlash(true) 
 	
-	router.HandleFunc("/getVapidKeys", util.GetVapidKey).Methods("POST") //calculate shipping price for shipping information
+	router.HandleFunc("/getVapidKeys", util.GetVapidKey).Methods("POST") // get public vapid key
+	router.HandleFunc("/pushSubscription", util.GetSubscription).Methods("POST") // get public vapid key
 	c := cors.New(cors.Options{
         AllowedOrigins: []string{"*"},
         AllowCredentials: true,
@@ -34,26 +34,4 @@ func main() {
 	handler := c.Handler(router)
 	log.Fatal(http.ListenAndServe(":3000", handler)) 
 	
-	
-//	vapidPrivateKey := ""
-//	util.GetVapidKey(vapidPrivateKey, "vapidPublicKey")
-//	
-//	fmt.Println("vapidPrivateKey:", vapidPrivateKey)
-//	
-//	subJSON := `{<YOUR SUBSCRIPTION JSON>}`
-//
-//	// Decode subscription
-//	s := webpush.Subscription{}
-//	if err := json.NewDecoder(bytes.NewBufferString(subJSON)).Decode(&s); err != nil {
-//		log.Fatal(err)
-//	}
-//
-//	// Send Notification
-//	_, err := webpush.SendNotification([]byte("Test"), &s, &webpush.Options{
-//		Subscriber:      "<EMAIL@EXAMPLE.COM>",
-//		VAPIDPrivateKey: vapidPrivateKey,
-//	})
-//	if err != nil {
-//		log.Fatal(err)
-//	}
 }
